@@ -1,0 +1,21 @@
+//@version=5
+indicator("Coffee Price AUD/kg", overlay=true)
+
+aud_usd = request.security("FX:AUDUSD", timeframe.period, close)
+usdaud = 1/ aud_usd //request.security("ICE:USDAUD", timeframe.period, close)
+
+// Constants
+var float POUNDS_PER_KG = 2.20462
+var float USD_CENTS_TO_DOLLARS = 0.01
+
+// Calculate AUD price per kg
+usd_per_pound = close * USD_CENTS_TO_DOLLARS  // Convert cents/pound to USD/pound
+usd_per_kg = usd_per_pound * POUNDS_PER_KG    // Convert USD/pound to USD/kg
+aud_per_kg = usd_per_kg / aud_usd             // Convert to AUD/kg
+
+// Create label
+var label price_label = na
+label.delete(price_label[1])  // Delete previous label
+// Place 2% above the high 
+
+price_label := label.new(    x=bar_index,     y=high + (high * 0.04),     text="AUD $" + str.tostring(aud_per_kg, "#.##") + "/kg",    color=color.new(color.blue, 0),    style=label.style_label_down,    textcolor=color.white)
