@@ -1,0 +1,12 @@
+//@version=6
+indicator('Daily Momentum', overlay = true)
+
+// Compare high and low to previous day
+isHigher = high > high[1] and low > low[1]
+isLower = high < high[1] and low < low[1]
+
+
+// Draw arrows 
+plotshape(isHigher, style = shape.triangleup, location = location.abovebar, color = color.green, size = size.tiny)
+plotshape(isLower, style = shape.triangledown, location = location.abovebar, color = color.red, size = size.tiny)
+plotshape(not isHigher and not isLower, style = shape.circle, location = location.abovebar, color = color.gray, size = size.tiny)
